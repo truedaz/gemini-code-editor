@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gemini Code Editor</title>
+  <style>
+    body {
+      font-family: var(--vscode-font-family);
+      color: var(--vscode-editor-foreground);
+      background-color: var(--vscode-editor-background);
+      padding: 10px;
+    }
+
+    textarea {
+      width: 95%;
+      min-height: 150px;
+      margin-bottom: 10px;
+      background-color: var(--vscode-input-background);
+      color: var(--vscode-input-foreground);
+      border: 1px solid var(--vscode-input-border);
+    }
+
+    input[type="text"] {
+      width: 95%;
+      margin-bottom: 10px;
+      background-color: var(--vscode-input-background);
+      color: var(--vscode-input-foreground);
+      border: 1px solid var(--vscode-input-border);
+      padding: 5px;
+    }
+
+    button {
+      padding: 8px 15px;
+      background-color: var(--vscode-button-background);
+      color: var(--vscode-button-foreground);
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: var(--vscode-button-hoverBackground);
+    }
+
+    #responseArea {
+      margin-top: 15px;
+      padding: 10px;
+      border: 1px solid var(--vscode-editorWidget-border);
+      background-color: var(--vscode-textBlockQuote-background);
+      white-space: pre-wrap;
+    }
+
+    .file-list {
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid var(--vscode-input-border);
+      margin-bottom: 10px;
+      padding: 5px;
+    }
+
+    .file-list-item {
+      cursor: pointer;
+      padding: 2px 5px;
+    }
+
+    .file-list-item:hover {
+      background-color: var(--vscode-list-hoverBackground);
+    }
+
+    .file-list-item.selected {
+      background-color: var(--vscode-list-activeSelectionBackground);
+      color: var(--vscode-list-activeSelectionForeground);
+    }
+
+    #statusArea {
+      margin-top: 10px;
+      font-style: italic;
+      color: var(--vscode-descriptionForeground);
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Gemini Code Editor</h1>
+  <p>Describe the changes you want to make to your codebase.</p>
+  <textarea id="instructions"
+    placeholder="e.g., Add a function to utils.ts that sums two numbers and call it in main.ts."></textarea>
+
+  <label for="targetFiles">Target Files (comma-separated, relative paths from workspace root):</label>
+  <input type="text" id="targetFiles" placeholder="e.g., src/utils.ts, src/main.ts">
+  <p><small>Leave empty to let Gemini infer, or if creating new files not based on existing ones. You can also select
+      files below.</small></p>
+
+  <p><strong>Available Workspace Files (click to add to Target Files):</strong> <button id="refreshFiles">Refresh
+      List</button></p>
+  <div id="fileList" class="file-list">Loading files...</div>
+
+  <button id="submitRequest">Submit to Gemini</button>
+
+  <div id="statusArea"></div>
+  <div id="responseArea" style="display:none;"></div>
+
+  <script src="{{scriptUri}}"></script>
+</body>
+
+</html>
+</html>

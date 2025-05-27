@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Extension",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": ["--extensionDevelopmentPath=${workspaceFolder}"],
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"], // Points to bundled output
+      "preLaunchTask": "npm: watch" // Or "npm: esbuild-watch" or similar from your package.json
+    },
+    {
+      "name": "Extension Tests",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "--extensionTestsPath=${workspaceFolder}/out/test/suite/index" // Test output, adjust if needed
+      ],
+      "outFiles": ["${workspaceFolder}/out/test/**/*.js"], // Test output, adjust if needed
+      "preLaunchTask": "npm: test-compile" // Or similar from your package.json
+    }
+    // You might have other configurations here too
+  ]
+}

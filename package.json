@@ -1,0 +1,63 @@
+{
+  "name": "gemini-code-editor",
+  "displayName": "Gemini Code Editor",
+  "description": "Edit codebase using Gemini Flash 2.5 Preview",
+  "version": "0.0.1",
+  "publisher": "your-publisher-name",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:gemini-code-editor.start"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "gemini-code-editor.start",
+        "title": "Gemini: Edit Codebase"
+      }
+    ],
+    "configuration": {
+      "title": "Gemini Code Editor",
+      "properties": {
+        "gemini-code-editor.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Your Google AI API Key for Gemini.",
+          "scope": "application"
+        },
+        "gemini-code-editor.modelName": {
+          "type": "string",
+          "default": "gemini-2.0-flash",
+          "description": "The Gemini model to use."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "npm run esbuild-watch",
+    "esbuild-watch": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap --watch",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.80.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "18.x",
+    "eslint": "^8.45.0",
+    "@typescript-eslint/eslint-plugin": "^6.2.0",
+    "@typescript-eslint/parser": "^6.2.0",
+    "typescript": "^5.1.6",
+    "vscode-test": "^1.6.0" 
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.11.3"
+  }
+}

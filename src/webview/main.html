@@ -43,6 +43,17 @@
       background-color: var(--vscode-button-hoverBackground);
     }
 
+    /* Style for the new Open Folder button */
+    h1 button#openFolderButton {
+      font-size: 0.6em;
+      /* Smaller than h1 text */
+      padding: 5px 10px;
+      margin-left: 15px;
+      vertical-align: middle;
+      /* Aligns better with the title text */
+    }
+
+
     #responseArea {
       margin-top: 15px;
       padding: 10px;
@@ -62,6 +73,14 @@
     .file-list-item {
       cursor: pointer;
       padding: 2px 5px;
+      list-style-type: none;
+      /* Remove bullets from list items */
+    }
+
+    .file-list ul {
+      padding-left: 5px;
+      /* Remove default ul padding */
+      margin: 0;
     }
 
     .file-list-item:hover {
@@ -82,7 +101,10 @@
 </head>
 
 <body>
-  <h1>Gemini Code Editor</h1>
+  <h1>
+    Gemini Code Editor
+    <button id="openFolderButton" title="Open a different folder in VS Code">Open Folder</button>
+  </h1>
   <p>Describe the changes you want to make to your codebase.</p>
   <textarea id="instructions"
     placeholder="e.g., Add a function to utils.ts that sums two numbers and call it in main.ts."></textarea>
@@ -104,5 +126,4 @@
   <script src="{{scriptUri}}"></script>
 </body>
 
-</html>
 </html>

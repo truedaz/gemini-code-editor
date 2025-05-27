@@ -37,6 +37,7 @@ export function activate(context: vscode.ExtensionContext) {
 				context.subscriptions
 			);
 
+			
 			// Handle messages from the webview
 			webviewPanel.webview.onDidReceiveMessage(
 				async message => {
@@ -46,6 +47,13 @@ export function activate(context: vscode.ExtensionContext) {
 							return;
 						case 'getWorkspaceFiles':
 							await sendWorkspaceFilesToWebview();
+							return;
+						case 'openFolder': // <<< NEW CASE
+							console.log('[EXTENSION] Received "openFolder" command from webview.'); // For Debug Console
+							vscode.commands.executeCommand('vscode.openFolder');
+							// VS Code will handle opening a folder. If it's in the same window,
+							// the workspace changes. The user might need to refresh the file list
+							// or re-open the extension panel if it auto-closes/reloads.
 							return;
 						case 'error':
 							vscode.window.showErrorMessage(message.text);
@@ -60,6 +68,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(disposable);
 }
+
 
 function getWebviewContent(context: vscode.ExtensionContext, webview: vscode.Webview): string {
 	const htmlPath = vscode.Uri.joinPath(context.extensionUri, 'src', 'webview', 'main.html');

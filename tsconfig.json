@@ -1,21 +1,22 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "ES2020", // Or newer if appropriate for your Node version
-    "outDir": "out",
-    "lib": [
-      "ES2020"
-    ],
+    "target": "es2020", // Or a suitable ES version
+    "outDir": "out",     // <<< IMPORTANT: This tells tsc where to put compiled .js files
+    "rootDir": "src",    // <<< IMPORTANT: This tells tsc where your .ts source files are
     "sourceMap": true,
-    "rootDir": "src",
-    "strict": true,   /* enable all strict type-checking options */
-    "esModuleInterop": true, /* Enables emit interoperability between CommonJS and ES Modules */
-    "skipLibCheck": true, /* Skip type checking of declaration files. */
+    "strict": true,
+    "lib": ["es2020"],
+    "esModuleInterop": true,
+    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
-    /* Additional Options */
-    // "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
-    // "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
-    // "noUnusedParameters": true,  /* Report errors on unused parameters. */
+    /* Add other options as needed */
   },
-  "exclude": ["node_modules", ".vscode-test"]
+  "include": [
+    "src/**/*.ts" // Ensure it includes your extension.ts
+  ],
+  "exclude": [
+    "node_modules",
+    ".vscode-test"
+  ]
 }

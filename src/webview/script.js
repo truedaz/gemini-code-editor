@@ -113,6 +113,7 @@
         sendMessageButton.addEventListener('click', () => {
             const userMessageText = messageInput.value.trim();
             const currentTargetFiles = targetFilesInput.value.trim();
+            console.log("Webview: Target files string being sent:", currentTargetFiles); // Add this log
 
             if (!userMessageText) {
                 statusArea.textContent = 'Please enter a message.';

@@ -230,7 +230,7 @@ async function handleChatRequest(
 
 		const workspaceContextInstruction = `
 The user is working within a VS Code workspace. You can create new files or modify existing files relative to the root of this workspace.
-If no file is specified, assume the files are in the workspace root (/).
+If the user asks to edit a file and the specific file isn't clear from the conversation or targeted files, assume the files are in the workspace root (/).
 You have access to the file system of this workspace to create, read, and write files.`; // Added a bit more emphasis
 
 

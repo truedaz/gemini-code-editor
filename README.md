@@ -3,6 +3,8 @@
 This is the README for your extension "gemini-code-editor". After writing up a brief description, we recommend including the following sections.
 
 Built with Gemini 2.5 pro: https://deepmind.google/models/gemini/pro/
+Gemini API usage: https://aistudio.google.com/usage
+
 
 ## Setup
 - Run or Debug extension

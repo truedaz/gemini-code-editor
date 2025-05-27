@@ -11,75 +11,157 @@
       color: var(--vscode-editor-foreground);
       background-color: var(--vscode-editor-background);
       padding: 10px;
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 20px);
+      /* Full height minus padding */
     }
 
-    textarea {
-      width: 95%;
-      min-height: 150px;
+    .header-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 10px;
-      background-color: var(--vscode-input-background);
-      color: var(--vscode-input-foreground);
+    }
+
+    h1 {
+      margin: 0;
+    }
+
+    h1 button#openFolderButton {
+      font-size: 0.6em;
+      padding: 5px 10px;
+      margin-left: 15px;
+      vertical-align: middle;
+    }
+
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      /* Allows chat-area to take available space */
+      overflow: hidden;
+      /* Prevents scrollbars on main-content itself */
+    }
+
+    #chatArea {
+      flex-grow: 1;
+      overflow-y: auto;
+      /* Scroll for chat messages */
       border: 1px solid var(--vscode-input-border);
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: var(--vscode-textBlockQuote-background);
     }
 
-    input[type="text"] {
-      width: 95%;
+    .chat-message {
+      margin-bottom: 8px;
+      padding: 8px;
+      border-radius: 5px;
+      word-wrap: break-word;
+    }
+
+    .chat-message.user {
+      background-color: var(--vscode-list-activeSelectionBackground);
+      color: var(--vscode-list-activeSelectionForeground);
+      text-align: right;
+      /* Align user messages to the right */
+      margin-left: 20%;
+    }
+
+    .chat-message.gemini {
+      background-color: var(--vscode-editorWidget-background);
+      border: 1px solid var(--vscode-editorWidget-border, var(--vscode-input-border));
+      margin-right: 20%;
+    }
+
+    .chat-message pre {
+      /* For code blocks in Gemini's response */
+      white-space: pre-wrap;
+      background-color: var(--vscode-textCodeBlock-background);
+      padding: 5px;
+      border-radius: 3px;
+      border: 1px solid var(--vscode-input-border);
+      overflow-x: auto;
+    }
+
+
+    .input-area {
+      display: flex;
+      flex-direction: column;
+      /* Stack input elements */
       margin-bottom: 10px;
+    }
+
+    #messageInput {
+      flex-grow: 1;
+      min-height: 50px;
+      /* Start a bit taller */
+      margin-bottom: 5px;
+      /* Space between textarea and button */
       background-color: var(--vscode-input-background);
       color: var(--vscode-input-foreground);
       border: 1px solid var(--vscode-input-border);
       padding: 5px;
     }
 
-    button {
+    .controls-row {
+      display: flex;
+      gap: 10px;
+      /* Space between elements */
+      align-items: center;
+      /* Align items vertically */
+      margin-bottom: 10px;
+    }
+
+    .controls-row label {
+      white-space: nowrap;
+      /* Prevent label from wrapping */
+    }
+
+    #targetFiles {
+      flex-grow: 1;
+      /* Allow target files input to take space */
+      background-color: var(--vscode-input-background);
+      color: var(--vscode-input-foreground);
+      border: 1px solid var(--vscode-input-border);
+      padding: 5px;
+    }
+
+    #sendMessage {
       padding: 8px 15px;
       background-color: var(--vscode-button-background);
       color: var(--vscode-button-foreground);
       border: none;
       cursor: pointer;
+      white-space: nowrap;
     }
 
-    button:hover {
+    #sendMessage:hover {
       background-color: var(--vscode-button-hoverBackground);
     }
 
-    /* Style for the new Open Folder button */
-    h1 button#openFolderButton {
-      font-size: 0.6em;
-      /* Smaller than h1 text */
-      padding: 5px 10px;
-      margin-left: 15px;
-      vertical-align: middle;
-      /* Aligns better with the title text */
-    }
-
-
-    #responseArea {
-      margin-top: 15px;
-      padding: 10px;
-      border: 1px solid var(--vscode-editorWidget-border);
-      background-color: var(--vscode-textBlockQuote-background);
-      white-space: pre-wrap;
+    .file-management {
+      margin-bottom: 10px;
     }
 
     .file-list {
-      max-height: 200px;
+      max-height: 150px;
+      /* Slightly smaller */
       overflow-y: auto;
       border: 1px solid var(--vscode-input-border);
-      margin-bottom: 10px;
       padding: 5px;
+      margin-top: 5px;
     }
 
     .file-list-item {
       cursor: pointer;
       padding: 2px 5px;
       list-style-type: none;
-      /* Remove bullets from list items */
     }
 
     .file-list ul {
       padding-left: 5px;
-      /* Remove default ul padding */
       margin: 0;
     }
 
@@ -93,35 +175,49 @@
     }
 
     #statusArea {
-      margin-top: 10px;
+      margin-top: 5px;
+      /* Reduced margin */
       font-style: italic;
       color: var(--vscode-descriptionForeground);
+      min-height: 1.2em;
+      /* Reserve space to prevent layout shifts */
     }
   </style>
 </head>
 
 <body>
-  <h1>
-    Gemini Code Editor
-    <button id="openFolderButton" title="Open a different folder in VS Code">Open Folder</button>
-  </h1>
-  <p>Describe the changes you want to make to your codebase.</p>
-  <textarea id="instructions"
-    placeholder="e.g., Add a function to utils.ts that sums two numbers and call it in main.ts."></textarea>
+  <div class="header-controls">
+    <h1>
+      Gemini Code Editor
+      <button id="openFolderButton" title="Open a different folder in VS Code">Open Folder</button>
+    </h1>
+  </div>
 
-  <label for="targetFiles">Target Files (comma-separated, relative paths from workspace root):</label>
-  <input type="text" id="targetFiles" placeholder="e.g., src/utils.ts, src/main.ts">
-  <p><small>Leave empty to let Gemini infer, or if creating new files not based on existing ones. You can also select
-      files below.</small></p>
+  <div class="main-content">
+    <div id="chatArea">
+      <!-- Chat messages will be appended here -->
+      <div class="chat-message gemini">Hello! How can I help you modify your codebase today?</div>
+    </div>
 
-  <p><strong>Available Workspace Files (click to add to Target Files):</strong> <button id="refreshFiles">Refresh
-      List</button></p>
-  <div id="fileList" class="file-list">Loading files...</div>
+    <div class="input-area">
+      <textarea id="messageInput" placeholder="Describe the changes or ask a question..."></textarea>
+      <div class="controls-row">
+        <label for="targetFiles">Target Files (Optional):</label>
+        <input type="text" id="targetFiles" placeholder="e.g., src/utils.ts, src/main.ts">
+        <button id="sendMessage">Send</button>
+      </div>
+    </div>
 
-  <button id="submitRequest">Submit to Gemini</button>
+    <div class="file-management">
+      <p><strong>Available Workspace Files (click to add/remove from Target Files):</strong>
+        <button id="refreshFiles">Refresh List</button>
+      </p>
+      <div id="fileList" class="file-list">Loading files...</div>
+    </div>
+  </div>
 
   <div id="statusArea"></div>
-  <div id="responseArea" style="display:none;"></div>
+  <!-- ResponseArea is no longer needed as responses go into chatArea -->
 
   <script src="{{scriptUri}}"></script>
 </body>
